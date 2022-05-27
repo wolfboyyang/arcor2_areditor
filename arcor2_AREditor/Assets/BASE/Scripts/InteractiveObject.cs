@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Collections;
 
 
+[RequireComponent(typeof(Target))]
 public abstract class InteractiveObject : Clickable {
 
     public bool IsLocked { get; protected set; }
@@ -32,16 +33,13 @@ public abstract class InteractiveObject : Clickable {
     protected virtual void Start() {
         LockingEventsCache.Instance.OnObjectLockingEvent += OnObjectLockingEvent;
         if (!offscreenIndicator) {
-            offscreenIndicator = gameObject.GetComponent<Target>();
             DisplayOffscreenIndicator(false);
         }
     }
 
     public virtual void DisplayOffscreenIndicator(bool active) {
-        if (!offscreenIndicator) {
+        if (!offscreenIndicator)
             offscreenIndicator = gameObject.GetComponent<Target>();
-        }
-
         offscreenIndicator.enabled = active;
     }
 
@@ -207,7 +205,7 @@ public abstract class InteractiveObject : Clickable {
     }
 
     public virtual void EnableOffscreenIndicator(bool enable) {
-        offscreenIndicator.enabled = enable;
+        DisplayOffscreenIndicator(enable);
     }
 
     public abstract void EnableVisual(bool enable);

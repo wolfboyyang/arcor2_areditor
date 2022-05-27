@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,25 +16,26 @@ public class PlatformDependentGameObjectSelector : MonoBehaviour {
     public List<GameObject> GameObjectsForSTANDALONEOnly = new List<GameObject>();
 
     private void Awake() {
+// disable ARSession and enable again does not reset the arsession and will not work properly
 #if UNITY_ANDROID && AR_ON
+        foreach (GameObject obj in GameObjectsForIOSOnly.Except(GameObjectsForANDROIDOnly)) {
+            obj.SetActive(false);
+        }
+        foreach (GameObject obj in GameObjectsForSTANDALONEOnly.Except(GameObjectsForANDROIDOnly)) {
+            obj.SetActive(false);
+        }
         foreach (GameObject obj in GameObjectsForANDROIDOnly) {
             obj.SetActive(true);
-        }
-        foreach (GameObject obj in GameObjectsForIOSOnly) {
-            obj.SetActive(false);
-        }
-        foreach (GameObject obj in GameObjectsForSTANDALONEOnly) {
-            obj.SetActive(false);
         }
 #elif UNITY_IOS && AR_ON
-        foreach (GameObject obj in GameObjectsForANDROIDOnly) {
+        foreach (GameObject obj in GameObjectsForANDROIDOnly.Except(GameObjectsForIOSOnly)) {
+            obj.SetActive(false);
+        }
+        foreach (GameObject obj in GameObjectsForSTANDALONEOnly.Except(GameObjectsForIOSOnly)) {
             obj.SetActive(false);
         }
         foreach (GameObject obj in GameObjectsForIOSOnly) {
             obj.SetActive(true);
-        }
-        foreach (GameObject obj in GameObjectsForSTANDALONEOnly) {
-            obj.SetActive(false);
         }
 #elif UNITY_STANDALONE || !AR_ON
         foreach (GameObject obj in GameObjectsForANDROIDOnly) {

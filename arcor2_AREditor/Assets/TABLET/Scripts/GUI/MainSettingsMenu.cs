@@ -65,15 +65,19 @@ public class MainSettingsMenu : Singleton<MainSettingsMenu>
         OnProjectOrSceneLoaded(false);
     }
 
-#if UNITY_ANDROID && AR_ON
+#if (UNITY_ANDROID||UNITY_IOS) && AR_ON
     private void OnEnable() {
-        CalibrationManager.Instance.OnARCalibrated += OnARCalibrated;
-        CalibrationManager.Instance.OnARRecalibrate += OnARRecalibrate;
+        if (CalibrationManager.Instance) {
+            CalibrationManager.Instance.OnARCalibrated += OnARCalibrated;
+            CalibrationManager.Instance.OnARRecalibrate += OnARRecalibrate;
+        }
     }
 
     private void OnDisable() {
-        CalibrationManager.Instance.OnARCalibrated -= OnARCalibrated;
-        CalibrationManager.Instance.OnARRecalibrate -= OnARRecalibrate;
+        if (CalibrationManager.Instance) {
+            CalibrationManager.Instance.OnARCalibrated -= OnARCalibrated;
+            CalibrationManager.Instance.OnARRecalibrate -= OnARRecalibrate;
+        }
     }
 #endif
 
@@ -106,7 +110,7 @@ public class MainSettingsMenu : Singleton<MainSettingsMenu>
         RobotsEEVisible.SetValue(Base.SceneManager.Instance.RobotsEEVisible, false);
         ActionObjectsVisibilitySlider.SetValueWithoutNotify(SceneManager.Instance.ActionObjectsVisibility * 100f);
 
-#if UNITY_ANDROID && AR_ON
+#if (UNITY_ANDROID || UNITY_IOS) && AR_ON
         recalibrationTime.SetValue(CalibrationManager.Instance.AutoRecalibrateTime);
         Trackables.SetValue(PlayerPrefsHelper.LoadBool("control_box_display_trackables", false));
         CalibrationElements.Interactable = false;
@@ -231,7 +235,7 @@ public class MainSettingsMenu : Singleton<MainSettingsMenu>
     }
 
     public void EnableAutoReCalibration(bool active) {
-#if UNITY_ANDROID && AR_ON
+#if (UNITY_ANDROID || UNITY_IOS) && AR_ON
         AutoCalibTooltip.DisplayAlternativeDescription = active;
         CalibrationManager.Instance.EnableAutoReCalibration(active);
 #endif
@@ -252,13 +256,13 @@ public class MainSettingsMenu : Singleton<MainSettingsMenu>
 
 
     public void DisplayTrackables(bool active) {
-#if UNITY_ANDROID && AR_ON
+#if (UNITY_ANDROID || UNITY_IOS) && AR_ON
         TrackingManager.Instance.DisplayPlanesAndPointClouds(active);
 #endif
     }
 
     public void DisplayCalibrationElements(bool active) {
-#if UNITY_ANDROID && AR_ON
+#if (UNITY_ANDROID || UNITY_IOS) && AR_ON
         CalibrationManager.Instance.ActivateCalibrationElements(active);
 #endif
     }
@@ -270,7 +274,7 @@ public class MainSettingsMenu : Singleton<MainSettingsMenu>
     /// <param name="sender"></param>
     /// <param name="args"></param>
     private void OnARCalibrated(object sender, CalibrationEventArgs args) {
-#if UNITY_ANDROID && AR_ON
+#if (UNITY_ANDROID || UNITY_IOS) && AR_ON
         // Activate toggle to enable hiding/displaying calibration cube
         CalibrationElements.Interactable = args.Calibrated;
         CalibrationElementsTooltip.DisplayAlternativeDescription = !args.Calibrated;
@@ -279,7 +283,7 @@ public class MainSettingsMenu : Singleton<MainSettingsMenu>
 
 
     private void OnARRecalibrate(object sender, EventArgs args) {
-#if UNITY_ANDROID && AR_ON
+#if (UNITY_ANDROID || UNITY_IOS) && AR_ON
         // Disactivate toggle to disable hiding/displaying calibration cube
         CalibrationElements.Interactable = false;
         CalibrationElementsTooltip.DisplayAlternativeDescription = true;
@@ -301,7 +305,7 @@ public class MainSettingsMenu : Singleton<MainSettingsMenu>
     }
 
     private void OnDestroy() {
-#if UNITY_ANDROID && AR_ON
+#if (UNITY_ANDROID || UNITY_IOS) && AR_ON
         PlayerPrefsHelper.SaveBool("control_box_display_trackables", (bool) Trackables.GetValue());
         PlayerPrefsHelper.SaveBool("control_box_autoCalib", (bool) AutoCalibration.GetValue());
 #endif

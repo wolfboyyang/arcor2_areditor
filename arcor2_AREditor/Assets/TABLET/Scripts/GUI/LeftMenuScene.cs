@@ -71,7 +71,7 @@ public class LeftMenuScene : LeftMenu
             } else {
                 AddActionObjectButton.SetInteractivity(true);
             }
-#if UNITY_ANDROID && AR_ON
+#if (UNITY_ANDROID || UNITY_IOS) && AR_ON
             if (!CalibrationManager.Instance.Calibrated && !TrackingManager.Instance.IsDeviceTracking()) {
                 ActionObjectAimingMenuButton.SetInteractivity(false, "AR is not calibrated");
                 AddActionObjectButton.SetInteractivity(false, "AR is not calibrated");

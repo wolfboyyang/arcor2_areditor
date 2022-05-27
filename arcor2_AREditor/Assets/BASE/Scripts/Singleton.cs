@@ -34,7 +34,7 @@ namespace Base {
                             // if there is such object, it is bug and it shuld to be reported
                             if (objects.Length > 0) {
                                 m_Instance = (T) objects[0];
-                                Debug.LogError("Calling method of inactive object");
+                                Debug.Log("Calling method of inactive object");
                             }                                
                         }
                         

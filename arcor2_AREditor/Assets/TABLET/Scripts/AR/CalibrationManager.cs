@@ -122,7 +122,6 @@ public class CalibrationManager : Singleton<CalibrationManager> {
         //GameManager.Instance.OnConnectedToServer += ConnectedToServer;
         ARTrackedImageManager.trackedImagesChanged += OnTrackedImageChanged;
         ARCameraManager.frameReceived += FrameReceived;
-
         GameManager.Instance.OnOpenSceneEditor += OnOpenAR;
         GameManager.Instance.OnOpenProjectEditor += OnOpenAR;
         GameManager.Instance.OnRunPackage += OnOpenAR;
@@ -130,10 +129,11 @@ public class CalibrationManager : Singleton<CalibrationManager> {
 
     private void OnDisable() {
         ARCameraManager.frameReceived -= FrameReceived;
-
-        GameManager.Instance.OnOpenSceneEditor -= OnOpenAR;
-        GameManager.Instance.OnOpenProjectEditor -= OnOpenAR;
-        GameManager.Instance.OnRunPackage -= OnOpenAR;
+        if (GameManager.Instance) {
+            GameManager.Instance.OnOpenSceneEditor -= OnOpenAR;
+            GameManager.Instance.OnOpenProjectEditor -= OnOpenAR;
+            GameManager.Instance.OnRunPackage -= OnOpenAR;
+        }
     }
 
     private void OnOpenAR(object sender, EventArgs e) {

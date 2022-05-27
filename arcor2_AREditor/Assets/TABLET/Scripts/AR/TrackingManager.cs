@@ -68,7 +68,7 @@ public class TrackingManager : Singleton<TrackingManager> {
     }
 
     private void Start() {
-#if UNITY_ANDROID && AR_ON
+#if (UNITY_ANDROID || UNITY_IOS) && AR_ON
         // We want to display notifications about tracking only when the camera feed is on screen (only in project or scene edit).
         GameManager.Instance.OnOpenProjectEditor += StartTrackingNotifications;
         GameManager.Instance.OnOpenSceneEditor += StartTrackingNotifications;

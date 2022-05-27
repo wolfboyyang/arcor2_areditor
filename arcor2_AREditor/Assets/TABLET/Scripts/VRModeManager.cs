@@ -31,7 +31,7 @@ public class VRModeManager : Singleton<VRModeManager> {
     private float gridInitPos;
 
     private void Start() {
-#if UNITY_ANDROID
+#if UNITY_ANDROID || UNITY_IOS
         VRModeON = false;
         arCameraBG = ARCamera.GetComponent<ARCameraBackground>();
         arCameraPosition = ARCamera.transform.position;
@@ -59,7 +59,7 @@ public class VRModeManager : Singleton<VRModeManager> {
     }
 
     private void Update() {
-#if UNITY_ANDROID
+#if UNITY_ANDROID || UNITY_IOS
         if (VRModeON) {
             float moveHorizontal = 0, moveVertical = 0,
                 rotateHorizontal = 0, rotateVertical = 0, moveUp = 0;

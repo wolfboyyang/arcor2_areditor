@@ -65,6 +65,7 @@ public class DialogButton : MonoBehaviour {
     }
 
     private void OnDestroy() {
-        Base.LockingEventsCache.Instance.OnObjectLockingEvent -= OnObjectLockingEvent;
+        if(Base.LockingEventsCache.Instance)
+            Base.LockingEventsCache.Instance.OnObjectLockingEvent -= OnObjectLockingEvent;
     }
 }

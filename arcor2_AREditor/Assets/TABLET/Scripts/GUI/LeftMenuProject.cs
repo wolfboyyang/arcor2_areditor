@@ -88,7 +88,8 @@ public class LeftMenuProject : LeftMenu
     }
 
     protected void OnDisable() {
-        ProjectManager.Instance.OnActionPointAddedToScene -= OnActionPointAddedToScene;
+        if(ProjectManager.Instance)
+            ProjectManager.Instance.OnActionPointAddedToScene -= OnActionPointAddedToScene;
     }
 
     private void OnActionPointAddedToScene(object sender, ActionPointEventArgs args) {
@@ -108,7 +109,7 @@ public class LeftMenuProject : LeftMenu
             }
         
             await base.UpdateBtns(obj);
-#if UNITY_ANDROID && AR_ON
+#if (UNITY_ANDROID || UNITY_IOS) && AR_ON
             if (!CalibrationManager.Instance.Calibrated && !TrackingManager.Instance.IsDeviceTracking()) {
                 SetActionPointParentButton.SetInteractivity(false, $"{SET_ACTION_POINT_PARENT_LABEL}\n(AR not calibrated)");
                 AddActionButton.SetInteractivity(false, $"{ADD_ACTION_LABEL}\n(AR not calibrated)");

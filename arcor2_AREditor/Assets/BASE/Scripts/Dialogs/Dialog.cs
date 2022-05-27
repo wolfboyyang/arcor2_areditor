@@ -65,8 +65,8 @@ public abstract class Dialog : MonoBehaviour
         visible = false;
         InputHandler.Instance.OnEscPressed -= OnEscPressed;
         InputHandler.Instance.OnEnterPressed -= OnEnterPressed;
-        windowManager.CloseWindow();
-        
+        if(windowManager!=null)
+            windowManager.CloseWindow();
     }
 
     public virtual void Open() {

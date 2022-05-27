@@ -9,7 +9,7 @@
 [Bb]uilds/
 [Ll]ogs/
 [Mm]emoryCaptures/
-/[Uu]ser[Ss]ettings/
+[Uu]ser[Ss]ettings/
 /arcor2_AREditor/[Aa]ssets/[Ss]ubmodules*
 
 # Never ignore Asset meta data
@@ -24,6 +24,7 @@
 # Visual Studio cache directory
 .vs/
 .vscode/
+.vsconfig
 
 # Gradle cache directory
 .gradle/

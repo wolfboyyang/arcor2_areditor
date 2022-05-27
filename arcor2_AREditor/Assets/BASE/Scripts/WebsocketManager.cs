@@ -181,19 +181,22 @@ namespace Base {
         /// </summary>
         async public void DisconnectFromSever() {
             Debug.Log("Disconnecting");
-            GameManager.Instance.ConnectionStatus = GameManager.ConnectionStatusEnum.Disconnected;
-            try {
-                await websocket.Close();
-            } catch (WebSocketException e) {
-                //already closed probably..
-            }
+            if(GameManager.Instance)
+                GameManager.Instance.ConnectionStatus = GameManager.ConnectionStatusEnum.Disconnected;
+            if(websocket!=null)
+                try {
+                    await websocket.Close();
+                } catch (WebSocketException e) {
+                    //already closed probably..
+                }
         }
 
         /// <summary>
         /// Sets default state for websocket manager and game manager
         /// </summary>
         public void CleanupAfterDisconnect() {
-            GameManager.Instance.ConnectionStatus = GameManager.ConnectionStatusEnum.Disconnected;
+            if(GameManager.Instance)
+                GameManager.Instance.ConnectionStatus = GameManager.ConnectionStatusEnum.Disconnected;
             websocket = null;
             serverDomain = null;
             GameManager.Instance.HideLoadingScreen();

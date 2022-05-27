@@ -5,24 +5,9 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/TABLET/Scenes/TabletGUI.unity
     guid: 57ec56f6b5d8dfa46b1097f108d4c2cb
-  - enabled: 0
-    path: Assets/2D_EDITOR/Scenes/2DGUI.unity
-    guid: a7d2cf5bfb3026342a30d53b5fb9a750
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: Assets/Submodules/UIGraph/Scenes/3D Example.unity
-    guid: 967792046f5624218bfdf16f6a007b8f
-  - enabled: 0
-    path: Assets/Submodules/PaperPlaneTools/ARMarker/Demo/MainScene.unity
-    guid: bc3ebb3cbffd043beac724a39548c54b
-  - enabled: 0
-    path: Assets/Submodules/Joystick Pack/Examples/Example Scene.unity
-    guid: 414bddd31c5ea4f4c9f5d1452e5bbb41
   m_configObjects:
     UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: 133f0d898a017a342b4555cce09d78db,
       type: 2}
