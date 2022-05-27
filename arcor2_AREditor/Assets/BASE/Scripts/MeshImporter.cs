@@ -1,4 +1,4 @@
-using System;
+ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -49,29 +49,16 @@ public class MeshImporter : Singleton<MeshImporter> {
     private void ImportMesh(string path, string aoId) {
 
         GameObject loadedObject = new GameObject("ImportedMeshObject");
-        if (Path.GetExtension(path).ToLower() == ".dae") {
-        //Debug.LogError("importing dae mesh name: " + path);
-            StreamReader reader = File.OpenText(path);
-            string daeFile = reader.ReadToEnd();
+        // Requires Trilib 2 asset from Unity Asset Store: https://assetstore.unity.com/packages/tools/modeling/trilib-2-model-loading-package-157548
+        // Supports: FBX, OBJ, GLTF2, STL, PLY, 3MF
+        AssetLoaderOptions assetLoaderOptions = AssetLoader.CreateDefaultLoaderOptions();
+        AssetLoader.LoadModelFromFile(path, null, delegate (AssetLoaderContext assetLoaderContext) {
+            if (Path.GetExtension(path).ToLower() == ".stl") {
+                assetLoaderContext.RootGameObject.transform.Rotate(0f, 180f, 0f);
+            }
 
-            // Requires Simple Collada asset from Unity Asset Store: https://assetstore.unity.com/packages/tools/input-management/simple-collada-19579
-            // Supports: DAE
-            StartCoroutine(ColladaImporter.Instance.ImportAsync(daeFile, Quaternion.identity, Vector3.one, Vector3.zero,
-                onModelImported: delegate (GameObject loadedGameObject) { OnMeshImported?.Invoke(this, new ImportedMeshEventArgs(loadedGameObject, aoId));},
-                wrapperGameObject: loadedObject));
-
-        } else {
-            // Requires Trilib 2 asset from Unity Asset Store: https://assetstore.unity.com/packages/tools/modeling/trilib-2-model-loading-package-157548
-            // Supports: FBX, OBJ, GLTF2, STL, PLY, 3MF
-            AssetLoaderOptions assetLoaderOptions = AssetLoader.CreateDefaultLoaderOptions();
-            AssetLoader.LoadModelFromFile(path, null, delegate (AssetLoaderContext assetLoaderContext) {
-                if (Path.GetExtension(path).ToLower() == ".stl") {
-                    assetLoaderContext.RootGameObject.transform.Rotate(0f, 180f, 0f);
-                }
-
-                OnMeshImported?.Invoke(this, new ImportedMeshEventArgs(assetLoaderContext.WrapperGameObject, aoId));
-            }, null, assetLoaderOptions: assetLoaderOptions, onError: OnModelLoadError, wrapperGameObject: loadedObject);
-        }
+            OnMeshImported?.Invoke(this, new ImportedMeshEventArgs(assetLoaderContext.WrapperGameObject, aoId));
+        }, null, assetLoaderOptions: assetLoaderOptions, onError: OnModelLoadError, wrapperGameObject: loadedObject);
     }
 
     /// <summary>
@@ -97,7 +84,7 @@ public class MeshImporter : Singleton<MeshImporter> {
                 string savePath = string.Format("{0}/{1}", meshDirectory, fileName);
                 System.IO.File.WriteAllBytes(savePath, www.downloadHandler.data);
                 meshSources[fileName] = false;
-                   
+
                 //Debug.LogError("MESH: download finished");
                 //if the mesh is zipped, extract it
                 if (Path.GetExtension(savePath).ToLower() == ".zip") {
@@ -198,7 +185,7 @@ public class MeshImporter : Singleton<MeshImporter> {
             // Check whether downloading can be started and start it, if so.
             return CanIDownload(meshId);
         }
-        
+
         string uri = MainSettingsMenu.Instance.GetProjectServiceURI() + fileName;
         DateTime downloadedZipLastModified = meshFileInfo.LastWriteTime;
         try {
